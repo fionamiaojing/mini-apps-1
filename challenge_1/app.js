@@ -1,13 +1,13 @@
-
 var playboard = [];
 for (var i = 0; i < 3; i++) {
     playboard.push([0,0,0]);
 }
-
+var playerName = {'X': 'X', 'O': 'O'}
 var winPattern = {'X':0, 'O':0};
 var lastRoundWinner;
 var currentPlayer = lastRoundWinner || 'X';
 
+//handle click event on gameboard
 var handleClick = function(e) {
     if (e.target.innerHTML) {
         return
@@ -15,9 +15,12 @@ var handleClick = function(e) {
     //place 'X' or 'O'
     placePosition(e.target);
     if (success(playboard)) {
+        // retain the lastRoundWinner
         lastRoundWinner = currentPlayer
+        // update the win pattern and display
         winPattern[currentPlayer]++;
         displayWinStatus();
+        // trigger end Game
         endGame(true)
     } else if (spaceLeft(playboard) === 0){
         // end game
@@ -28,32 +31,42 @@ var handleClick = function(e) {
     }
 }
 
+//handle Refresh
 var handleSubmit = function() {
-    // clear message/gameboard/playboard/class
-    // add back onclick event
+    // DOM event:
+    // clear messages in the message tag
     document.getElementById('message').innerHTML = '';
+    // clear placement of 'X' or 'O' in table;
     var tdElements = document.getElementsByTagName('td');
     for (var i = 0; i < tdElements.length; i++) {
         tdElements[i].innerHTML = '';
     }
-    clearPlayBoard();
+    // clear css style
     document.getElementById('gameBoard').classList.remove('endGame');
+    // JS file event:
+    // clear playboard
+    clearPlayBoard();
+    // addback onclick event
     document.getElementById('gameBoard').setAttribute('onclick', 'handleClick(event)');
-    currentPlayer = 'X';
-
+    // restart from the lastRoundWinner
+    currentPlayer = lastRoundWinner;
 }
 
+//handle submit name
 var handleName = function(e) {
+    // Display name on the DOM
     var inputValue = e.target.parentNode.childNodes[3].value
     e.target.parentNode.childNodes[1].innerHTML = 'Player : ' + inputValue + ' ('+ e.target.id + ')';
+    playerName[e.target.id] = inputValue;
 }
 
-
+// handle place 'X' or 'O'
 var placePosition = function(target) {
+    // set the attr in DOM
     target.innerHTML = currentPlayer;
-    // locate the position in playboard
+    // locate the position in playboard and update playboard
     var col = target.id % 3;
-    var row = (target.id - col) / 3;
+    var row = Math.floor(target.id / 3);
     playboard[row][col] = (currentPlayer === 'X' ? 1 : -1);
 }
 
@@ -62,6 +75,7 @@ var switchPlayer = function() {
 }
 
 var clearPlayBoard = function() {
+    // reset all values in playboard to 0
     for (var row = 0; row < 3; row++) {
         for (var col = 0; col < 3; col++) {
             playboard[row][col] = 0
@@ -113,7 +127,7 @@ var spaceLeft = function(playboard) {
 var endGame = function(status) {
     var message;
     if (status) {
-        message = 'Winner is ' + currentPlayer;
+        message = 'Winner is ' + playerName[currentPlayer];
     } else {
         message = 'Reached A Tie, no winners, please restart'
     }
@@ -132,6 +146,5 @@ var displayWinStatus = function() {
         text.push('vs');
     }
     text.pop();
-    console.log(text.join(' '));
     document.getElementById('winStatus').innerHTML = text.join(' ');
 }

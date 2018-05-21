@@ -5,7 +5,6 @@ for (var i = 0; i < 3; i++) {
 }
 
 var winPattern = {'X':0, 'O':0};
-var playerName = {'X': 'X', 'O':'O'};
 var lastRoundWinner;
 var currentPlayer = lastRoundWinner || 'X';
 
@@ -18,6 +17,7 @@ var handleClick = function(e) {
     if (success(playboard)) {
         lastRoundWinner = currentPlayer
         winPattern[currentPlayer]++;
+        displayWinStatus();
         endGame(true)
     } else if (spaceLeft(playboard) === 0){
         // end game
@@ -29,9 +29,8 @@ var handleClick = function(e) {
 }
 
 var handleSubmit = function() {
-    //clear message
-    //clear board
-    //clear class
+    // clear message/gameboard/playboard/class
+    // add back onclick event
     document.getElementById('message').innerHTML = '';
     var tdElements = document.getElementsByTagName('td');
     for (var i = 0; i < tdElements.length; i++) {
@@ -45,14 +44,13 @@ var handleSubmit = function() {
 }
 
 var handleName = function(e) {
-    var inputValue = e.target.parentNode.childNodes[1].value
-    playerName[e.target.id] = e.target.id + inputValue;
-    e.target.parentNode.innerHTML = e.target.parentNode.innerHTML + inputValue;
+    var inputValue = e.target.parentNode.childNodes[3].value
+    e.target.parentNode.childNodes[1].innerHTML = 'Player : ' + inputValue + ' ('+ e.target.id + ')';
 }
 
 
 var placePosition = function(target) {
-    target.innerHTML = playerName[currentPlayer];
+    target.innerHTML = currentPlayer;
     // locate the position in playboard
     var col = target.id % 3;
     var row = (target.id - col) / 3;
@@ -115,7 +113,7 @@ var spaceLeft = function(playboard) {
 var endGame = function(status) {
     var message;
     if (status) {
-        message = 'winner is ' + currentPlayer;
+        message = 'Winner is ' + currentPlayer;
     } else {
         message = 'Reached A Tie, no winners, please restart'
     }
@@ -123,4 +121,17 @@ var endGame = function(status) {
     document.getElementById('gameBoard').classList.add('endGame');
     document.getElementById('message').innerHTML = message;
     document.getElementById('gameBoard').removeAttribute('onclick');
+}
+
+var displayWinStatus = function() {
+    var text = []
+    for (var key in winPattern) {
+        text.push(key);
+        text.push(':');
+        text.push(winPattern[key]);
+        text.push('vs');
+    }
+    text.pop();
+    console.log(text.join(' '));
+    document.getElementById('winStatus').innerHTML = text.join(' ');
 }

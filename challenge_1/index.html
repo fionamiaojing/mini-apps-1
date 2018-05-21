@@ -10,15 +10,18 @@
     <h1>Tic Toc Toe Game</h1>
     <div>
         <div class='info'>
-            <div>Player X
+            <div>
+                <p>Player 1</p>
                 <input type="text" id='playerX' value=''>
                 <button type="button" id='X' onclick="handleName(event)" placeholder="please enter name...">Submit</button>
             </div>
-            <div>Player O 
+            <div> 
+                <p>Player 2</p>
                 <input type="text" id='playerO' value=''>
                 <button type="button" id='O' onclick="handleName(event)" placeholder="please enter name...">Submit</button>
             </div>
         </div>
+        <div id='winStatus'>X : 0 vs O : 0</div>
         <button type="button" onclick="handleSubmit()">Restart</button>
         <table id='gameBoard' onclick="handleClick(event)">
             <tr id='row1'>

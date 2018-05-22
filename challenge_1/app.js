@@ -6,6 +6,7 @@ var playerName = {'X': 'X', 'O': 'O'}
 var winPattern = {'X':0, 'O':0};
 var lastRoundWinner;
 var currentPlayer = lastRoundWinner || 'X';
+var toggleBoard = false;
 
 //handle click event on gameboard
 var handleClick = function(e) {
@@ -28,6 +29,12 @@ var handleClick = function(e) {
     } else {
         // switch player
         switchPlayer();
+        // check if need to toggle;
+        if (toggleBoard) {
+            let midplayboard = rotateMatrix(playboard);
+            playboard = gravityMatrix(midplayboard);
+        }
+        
     }
 }
 
@@ -147,4 +154,72 @@ var displayWinStatus = function() {
     }
     text.pop();
     document.getElementById('winStatus').innerHTML = text.join(' ');
+}
+
+var handleToggle = function(event) {
+    if (event.target.checked) {
+        toggleBoard = true;
+    } else {
+        toggleBoard = false;
+    }
+}
+
+
+var rotateMatrix = function(playboard) {
+    let newMatrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    let oldMatrix = playboard;
+    for (var row = 0; row < 3; row++) {
+        for (var col = 0; col < 3; col++) {
+            //rotate playboard
+            var value = oldMatrix[2-row][col];
+            newMatrix[col][row] = value;
+            //rotate gameboard
+            var correspondingID = col * 3 + row;
+            resetElement(correspondingID, value);
+        }
+    }
+    return newMatrix 
+}
+
+var gravityMatrix = function(playboard) {
+    let newMatrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    let oldMatrix = playboard;
+    for (var row = 1; row >= 0; row--) {
+        for (var col = 0; col < 3; col++) {
+            let  currentVal = oldMatrix[row][col];
+            if ( currentVal === 0) {
+                continue
+            }
+            var newRow;
+            if (oldMatrix[1][col] === 0) {
+                newRow = 1;
+            } 
+            if (oldMatrix[2][col] === 0) {
+                newRow = 2;
+            }
+            if (newRow) {
+                newMatrix[newRow][col] = currentVal;
+                oldMatrix[row][col] = 0;
+                oldMatrix[newRow][col] = currentVal;
+                let newid = newRow * 3 + col;
+                resetElement(newid, currentVal);
+                let oldid = row * 3 + col;
+                resetElement(oldid, 0);
+            }
+            
+        }
+    }
+    return playboard;
+}
+
+var resetElement = function(id, value) {
+    var text = '';
+    if (value === 0) {
+        text = ''
+    } else if (value === 1) {
+        text = 'X'
+    } else {
+        text = 'O'
+    }
+    document.getElementById(id).innerHTML = text;
 }

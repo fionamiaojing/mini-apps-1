@@ -33,6 +33,7 @@ var handleClick = function(e) {
         if (toggleBoard) {
             let midplayboard = rotateMatrix(playboard);
             playboard = gravityMatrix(midplayboard);
+            //playboard = midplayboard;
         }
         
     }
@@ -134,7 +135,7 @@ var spaceLeft = function(playboard) {
 var endGame = function(status) {
     var message;
     if (status) {
-        message = 'Winner is ' + playerName[currentPlayer];
+        message = 'Winner is ' + playerName[currentPlayer] + ' 🎉';
     } else {
         message = 'Reached A Tie, no winners, please restart'
     }
@@ -182,31 +183,25 @@ var rotateMatrix = function(playboard) {
 }
 
 var gravityMatrix = function(playboard) {
-    let newMatrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-    let oldMatrix = playboard;
     for (var row = 1; row >= 0; row--) {
         for (var col = 0; col < 3; col++) {
-            let  currentVal = oldMatrix[row][col];
+            let  currentVal = playboard[row][col];
             if ( currentVal === 0) {
                 continue
             }
-            var newRow;
-            if (oldMatrix[1][col] === 0) {
-                newRow = 1;
-            } 
-            if (oldMatrix[2][col] === 0) {
-                newRow = 2;
-            }
-            if (newRow) {
-                newMatrix[newRow][col] = currentVal;
-                oldMatrix[row][col] = 0;
-                oldMatrix[newRow][col] = currentVal;
-                let newid = newRow * 3 + col;
-                resetElement(newid, currentVal);
-                let oldid = row * 3 + col;
-                resetElement(oldid, 0);
-            }
-            
+            var newRow = 2;
+            while (newRow > row) {
+                if (playboard[newRow][col] === 0) {
+                    playboard[newRow][col] = currentVal;
+                    playboard[row][col] = 0;
+                    let newid = newRow * 3 + col;
+                    resetElement(newid, currentVal);
+                    let oldid = row * 3 + col;
+                    resetElement(oldid, 0);
+                    break;
+                }
+                newRow--
+            }  
         }
     }
     return playboard;

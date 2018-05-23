@@ -1,20 +1,9 @@
 const fs = require('fs');
 
 module.exports = {
-    // headers: {
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-    //     'Access-Control-Allow-Headers': 'content-type',
-    //     'Content-Type': 'application/json'
-    // },
-
-    // sendResponse: function(res, data, statusCode) {
-    //     statusCode = statusCode || 200;
-    //     res.writeHead(statusCode, exports.headers);
-    //     res.end(data);
-    // },
 
     renderData: (message) => {
+        console.log(message);
         var template = ['firstName', 'lastName', 'county', 'city', 'role', 'sales']
         var output = [];
         var rowNumber = 0;

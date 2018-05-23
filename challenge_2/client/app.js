@@ -1,8 +1,9 @@
 class App {
+    
     constructor() {
         this.server = 'http://localhost:8000/';
     };
-
+    
     init() {
         //this.fecth();
         //submit button add event listener
@@ -10,12 +11,12 @@ class App {
             event.preventDefault();
             this.handleSubmit();
         })
+        //filter button add event listener
         $('#filter').on('click', () => {
             let data = {filter: []};
             data.filter.push($('#filterArea').val());
             this.delete(data);
         })
-
     }
 
     fecth() {
@@ -34,18 +35,16 @@ class App {
     }
 
     handleSubmit() {
-        let data = {message: []}
         //depends on if the input contains ';' at the end;
         var inputData = $('#inputArea').val().slice(0, -1);
-        data.message.push(inputData);
-        this.send(data);
+        this.send(inputData);
     }
 
     send(data) {
         $.ajax({
             type: "POST",
             url: this.server + 'messages',
-            data: JSON.stringify(data),
+            data: data,
             contentType: 'application/json',
             success: () => {
                 console.log('data sent')
@@ -57,7 +56,6 @@ class App {
         });
     }
 
-    
     delete(data) {
         $.ajax({
             type: "DELETE",

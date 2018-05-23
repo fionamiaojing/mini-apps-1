@@ -9,6 +9,7 @@ app.set('port', process.env.PORT || 8000);
 
 //either use bodyParser or express.json() to parse request.body
 // app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json());
 
 app.get('/messages', (request, response) => {
@@ -19,9 +20,8 @@ app.get('/messages', (request, response) => {
 })
 
 app.post('/messages', function(request, response) {
-    // request.body passed in must be an JSON.stringified object;
-    let data = request.body.message[0];
-    data = helper.renderData(JSON.parse(data));
+    //the request body is an object;
+    data = helper.renderData(request.body);
     helper.writeData(data);
     response.send('sent');
 })

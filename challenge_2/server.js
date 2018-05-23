@@ -23,9 +23,8 @@ app.post('/messages', function(request, response) {
 })
 
 app.delete('/messages', function(request, response) {
-    console.log('delete function triggered')
     let data = request.body.filter[0];
-    //do something to delete the file
+    helper.deleteData(data);
     helper.sendResponse(response, 'Deleted');
 })
 

@@ -24,7 +24,6 @@ class App {
             url: this.server + 'messages',
             contentType: 'application/json',
             success: (data) => {
-                console.log(data);
                 console.log('data received', data) 
                 $('#outputArea').html(data);
             },
@@ -36,7 +35,8 @@ class App {
 
     handleSubmit() {
         let data = {message: []}
-        var inputData = $('#inputArea').val();
+        //depends on if the input contains ';' at the end;
+        var inputData = $('#inputArea').val().slice(0, -1);
         data.message.push(inputData);
         this.send(data);
     }

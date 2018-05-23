@@ -21,11 +21,11 @@ module.exports = {
         var recursion = (information, parentId) => {
             var currentOutput = [rowNumber];
             for (var key of template) {
-                currentOutput.push(information[key]);
+                currentOutput.push(information[key] || '');
             }
             currentOutput.push(parentId);
             output.push(currentOutput);
-            if (information['children'].length > 0) {
+            if ('children' in information && information['children'].length > 0) {
                 parentId = rowNumber;
                 for (var child of information['children']) {
                     rowNumber++;
@@ -55,13 +55,26 @@ module.exports = {
             if (err) {
                 console.error(err);
             } else {
-                console.log(data.toString());
                 callback(res, data.toString());
             }
         })
     },
 
     deleteData: function(filter) {
-        
+
+        fs.readFile('./CSV-Report/test.txt', (err, data) => {
+            if (err) {
+                console.error(err);
+            } else {
+                let newData = data.toString().split('\n').filter(eachLine => !eachLine.includes(filter)).join('\n');
+                fs.writeFile('./CSV-Report/test.txt', newData, (err) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log('Successly Filtered!')
+                    }
+                });
+            }
+        })
     }
 }

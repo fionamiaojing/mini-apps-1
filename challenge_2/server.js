@@ -23,6 +23,8 @@ app.post('/messages', function(request, response) {
     //the request body is an object;
     data = helper.renderData(request.body);
     helper.writeData(data);
+    //mongodb
+    helper.writeData2();
     response.send('sent');
 })
 

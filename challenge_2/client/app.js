@@ -25,7 +25,6 @@ class App {
             url: this.server + 'messages',
             contentType: 'application/json',
             success: (data) => {
-                console.log('data received', data) 
                 $('#outputArea').html(data);
             },
             error: (error) => {

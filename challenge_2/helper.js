@@ -1,4 +1,5 @@
 const fs = require('fs');
+const mongo = require('./mongo/mongo.js');
 
 module.exports = {
 
@@ -36,6 +37,35 @@ module.exports = {
             } else {
                 console.log('Successly Saved!')
             }
+        });
+    },
+
+    writeData2: () => {
+        var example = [
+            {
+              "firstName": "Smitty",
+              "lastName": "Won",
+              "county": "San Mateo",
+              "city": "Redwood City",
+              "role": "Sales Person",
+              "sales": 4800000,
+              "children": []
+            },
+            {
+              "firstName": "Allen",
+              "lastName": "Price",
+              "county": "San Mateo",
+              "city": "Burlingame",
+              "role": "Sales Person",
+              "sales": 2500000,
+              "children": []
+            }
+          ]
+        mongo.insertToDB(example);
+        var result = [];
+        mongo.readDB((data) => {
+            result.push(data);
+            console.log('result ------->', result);
         });
     },
 

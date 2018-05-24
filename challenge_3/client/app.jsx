@@ -8,7 +8,6 @@ class App extends React.Component {
             ids: ['homePage', 'account', 'shipping', 'creditCard', 'complete'],
             fullData: {},
             displayData: [],
-
         }
     };
 
@@ -41,7 +40,7 @@ class App extends React.Component {
     handleClickPre(index) {
         let output = Array(5).fill(false).map((e, i) => (i === (index - 1) ? true: false));
         this.setState({
-            display: output
+            display: output,
         });
     }
 

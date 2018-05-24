@@ -1,3 +1,8 @@
+body {
+    background-color:#FFC7C7;
+    color: white;
+}
+
 label {
     font-size: 20px;
     margin-right: 10px;
@@ -12,6 +17,28 @@ input {
 button {
     width: 100px;
     height: 30px;
-    text-align: center;
-    
+    background-color: #FFE2E2;
+    color: #7F7F7F;
+    text-align: center; 
 }
+
+dl {
+    border: 1px solid white;
+    box-sizing: border-box;
+    float: left;
+    padding: 24px;
+    width: 100%;
+}
+
+dt,
+dd {
+    float: left;
+    line-height: 1.5rem;
+}
+
+dt {
+    clear: left;
+    font-weight: bold;
+    width: 100px;
+}
+

@@ -10,16 +10,8 @@ app.use(express.json())
 
 //post request
 
-app.post('/account', function (req, res) {
-    helper.handlePost(req, res, 'account')
-})
-
-app.post('/shipping', function (req, res) {
-    helper.handlePost(req, res, 'shipping')
-})
-
-app.post('/creditCard', function (req, res) {
-    helper.handlePost(req, res, 'creditCard')
+app.post('/complete', function (req, res) {
+    helper.handlePost(req, res)
 })
 
 //get request
@@ -30,5 +22,5 @@ app.get('/complete', function(req, res) {
 
 app.listen(app.get('port'), function () {
     console.log('checkout app listening on port 3000!');
-  });
+});
   
